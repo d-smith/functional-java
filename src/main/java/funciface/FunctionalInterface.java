@@ -3,26 +3,26 @@ package funciface;
 
 public class FunctionalInterface {
 
-    public static Function compose(final Function f1, final Function f2) {
-        return new Function() {
+    public static Function<Integer,Integer> compose(final Function<Integer,Integer> f1, final Function<Integer,Integer> f2) {
+        return new Function<Integer,Integer>() {
             @Override
-            public int apply(int arg) {
+            public Integer apply(Integer arg) {
                 return f1.apply(f2.apply(arg));
             }
         };
     }
 
     public static void main(String[] args) {
-        Function triple = new Function() {
+        Function<Integer, Integer> triple = new Function<Integer,Integer>() {
             @Override
-            public int apply(int arg) {
+            public Integer apply(Integer arg) {
                 return arg * 3;
             }
         };
 
-        Function square = new Function() {
+        Function<Integer,Integer> square = new Function<Integer,Integer>() {
             @Override
-            public int apply(int arg) { return arg * arg;}
+            public Integer apply(Integer arg) { return arg * arg;}
         };
 
         System.out.println("Triple 3 is " + triple.apply(3));

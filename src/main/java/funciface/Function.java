@@ -1,6 +1,6 @@
 package funciface;
 
-public interface Function {
-    int apply(int arg);
+public interface Function<T,U> {
+    U apply(T arg);
 }
 
