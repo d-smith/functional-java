@@ -2,7 +2,7 @@ package funciface;
 
 
 public class FunctionalInterface {
-    
+
     public static Function<Integer,Integer> compose(final Function<Integer,Integer> f1, final Function<Integer,Integer> f2) {
         return arg -> f1.apply(f2.apply(arg));
     }
@@ -18,5 +18,9 @@ public class FunctionalInterface {
         Function tripleThenSquare = compose(square, triple);
 
         System.out.println("triple then square 2 is " + tripleThenSquare.apply(2));
+
+        BinaryOperator addOp = x -> y -> x + y;
+
+        System.out.println("2 + 2 = " + addOp.apply(2).apply(2));
     }
 }
