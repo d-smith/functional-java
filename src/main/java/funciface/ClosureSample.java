@@ -13,5 +13,9 @@ public class ClosureSample {
         Function<Double, Function<Double,Double>> curriedAddTax = x -> y -> y + y * x;
 
         System.out.println(curriedAddTax.apply(taxRate).apply(10.0));
+
+        Function<Double,Double> withNinePercentTax = curriedAddTax.apply(0.09);
+
+        System.out.println(withNinePercentTax.apply(10.0));
     }
 }
