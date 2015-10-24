@@ -1,13 +1,20 @@
 package chapter3;
 
 
+import funciface.Function;
+
 import java.util.regex.Pattern;
 
+
+//1st version- imperative, mixed processing with effects
+//2nd - separate computation from effects
 public class SimpleEmail {
     final static Pattern emailPattern = Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
 
+    final static Function<String, Boolean> emailChecker = s -> emailPattern.matcher(s).matches();
+
     static void testMail(String email) {
-        if(emailPattern.matcher(email).matches()) {
+        if(emailChecker.apply(email)) {
             sendVerificationMail(email);
         } else {
             logError("email " + email + " is invalid.");
