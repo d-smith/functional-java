@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 //1st version- imperative, mixed processing with effects
 //2nd - separate computation from effects
 //3rd - introduce something to handle the result of the computation
+//4th - update validate to return an executable value instead of validate just having an effect
 public class SimpleEmail {
     final static Pattern emailPattern = Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
 
@@ -37,18 +38,16 @@ public class SimpleEmail {
         System.err.println("Error message logged: " + s);
     }
 
-    static void validate(String s) {
+    static Executable validate(String s) {
         Result result = emailChecker.apply(s);
-        if (result instanceof Result.Success) {
-            sendVerificationMail(s);
-        } else {
-            logError(((Result.Failure) result).getMessage());
-        }
+        return (result instanceof Result.Success)
+                ? () -> sendVerificationMail(s)
+                : () -> logError(((Result.Failure) result).getMessage());
     }
 
     public static void main(String[] args) {
-        validate("foo@bar.com");
-        validate(null);
-        validate("");
+        validate("foo@bar.com").exec();
+        validate(null).exec();
+        validate("").exec();
     }
 }
