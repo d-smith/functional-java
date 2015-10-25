@@ -10,44 +10,34 @@ import java.util.regex.Pattern;
 //2nd - separate computation from effects
 //3rd - introduce something to handle the result of the computation
 //4th - update validate to return an executable value instead of validate just having an effect
+//5th - Eliminate instanceof test, allow configuring what to do based on validation result
 public class SimpleEmail {
-    final static Pattern emailPattern = Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
+    static Pattern emailPattern = Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
 
-    final static Function<String, Result> emailChecker = s -> {
+    static Function<String, Result<String>> emailChecker = s -> {
         if (s == null) {
-            return new Result.Failure("email must not be null");
+            return Result.failure("email must not be null");
         }
 
         if (s.length() == 0) {
-            return new Result.Failure("email must not be empty");
+            return Result.failure("email must not be empty");
         }
 
         if (emailPattern.matcher(s).matches()) {
-            return new Result.Success();
+            return Result.success(s);
         } else {
-            return new Result.Failure("email " + s + " is invalid.");
+            return Result.failure("email " + s + " is invalid.");
         }
     };
 
 
-    static void sendVerificationMail(String email) {
-        System.out.println("Verification mail send to " + email);
-    }
+    static Effect<String> success = s -> System.out.println("Verification mail send to " + s);
 
-    static void logError(String s) {
-        System.err.println("Error message logged: " + s);
-    }
-
-    static Executable validate(String s) {
-        Result result = emailChecker.apply(s);
-        return (result instanceof Result.Success)
-                ? () -> sendVerificationMail(s)
-                : () -> logError(((Result.Failure) result).getMessage());
-    }
+    static Effect<String> failure = s -> System.err.println("Error message logged: " + s);
 
     public static void main(String[] args) {
-        validate("foo@bar.com").exec();
-        validate(null).exec();
-        validate("").exec();
+        emailChecker.apply("foo@bar.com").bind(success, failure);
+        emailChecker.apply(null).bind(success, failure);
+        emailChecker.apply("").bind(success, failure);
     }
 }
