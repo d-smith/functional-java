@@ -28,7 +28,7 @@ public class SimpleEmail {
                 mcase(() -> s.length() == 0, () -> failure("email must not be empty")),
                 mcase(() -> !emailPattern.matcher(s).matches(), () -> failure("email " + s + " is invalid."))
         );
-    
+
 
 
     static Effect<String> success = s -> System.out.println("Verification mail send to " + s);
