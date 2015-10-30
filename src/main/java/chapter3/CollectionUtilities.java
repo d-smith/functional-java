@@ -64,4 +64,19 @@ public class CollectionUtilities {
         workList.remove(0);
         return workList;
     }
+
+    public static <T> List<T> append(List<T> list, T item) {
+        List<T> l2 = copy(list);
+        l2.add(item);
+        return l2;
+    }
+
+    public static Integer fold(List<Integer> l, Integer identity, Function<Integer, Function<Integer,Integer>> f) {
+        int result = identity;
+        for(Integer v: l) {
+            result = f.apply(result).apply(v);
+        }
+
+        return result;
+    }
 }
