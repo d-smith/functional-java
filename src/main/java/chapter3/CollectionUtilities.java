@@ -79,4 +79,12 @@ public class CollectionUtilities {
 
         return result;
     }
+
+    public static <T,U> U foldLeft(List<T> list, U identity, Function<U, Function<T,U>> f) {
+        U result = identity;
+        for(T t: list) {
+            result = f.apply(result).apply(t);
+        }
+        return result;
+    }
 }
