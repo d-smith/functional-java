@@ -5,14 +5,16 @@ import com.fpinjava.common.Function;
 
 import java.util.List;
 
-import static chapter3.CollectionUtilities.fold;
-import static chapter3.CollectionUtilities.foldLeft;
-import static chapter3.CollectionUtilities.list;
+import static chapter3.CollectionUtilities.*;
 
 public class Fold {
 
     public static String addSI(String s, Integer i) {
         return "(" + s + " + " + i + ")";
+    }
+
+    public static String addIS(Integer i, String s) {
+        return "(" + i + " + " + s + ")";
     }
 
     public static void main(String... args) {
@@ -22,7 +24,11 @@ public class Fold {
 
         Function<String, Function<Integer, String>> f = x -> y -> addSI(x,y);
 
-        String r2 = foldLeft(l,"0",f);
-        System.out.println(r2);
+        String flResult = foldLeft(l,"0",f);
+        System.out.println(flResult);
+
+        Function<Integer, Function<String,String>> g = x -> y -> addIS(x,y);
+        String friResult = iterativeFoldRight(l,"0",g);
+        System.out.println(friResult);
     }
 }

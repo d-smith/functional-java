@@ -87,4 +87,12 @@ public class CollectionUtilities {
         }
         return result;
     }
+
+    public static <T,U> U iterativeFoldRight(List<T> list, U identity, Function<T, Function<U,U>> f) {
+        U result = identity;
+        for(int i = list.size(); i > 0; i--) {
+            result = f.apply(list.get(i - 1)).apply(result);
+        }
+        return result;
+    }
 }
