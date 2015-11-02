@@ -95,4 +95,9 @@ public class CollectionUtilities {
         }
         return result;
     }
+
+    public static <T,U> U foldRight(List<T> list, U identity, Function<T, Function<U,U>> f) {
+        return list.isEmpty() ? identity
+                    : f.apply(head(list)).apply(foldRight(tail(list),identity, f));
+    }
 }

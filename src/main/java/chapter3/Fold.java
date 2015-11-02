@@ -30,5 +30,8 @@ public class Fold {
         Function<Integer, Function<String,String>> g = x -> y -> addIS(x,y);
         String friResult = iterativeFoldRight(l,"0",g);
         System.out.println(friResult);
+
+        String fiResult = iterativeFoldRight(l,"0",g);
+        System.out.println(fiResult);
     }
 }
