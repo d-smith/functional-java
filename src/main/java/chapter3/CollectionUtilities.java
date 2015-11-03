@@ -100,4 +100,12 @@ public class CollectionUtilities {
         return list.isEmpty() ? identity
                     : f.apply(head(list)).apply(foldRight(tail(list),identity, f));
     }
+
+    public static <T> List<T> prepend(T t,List<T> list) {
+        return foldLeft(list,list(t),x -> y -> append(x,y));
+    }
+
+    public static <T> List<T> reverse(List<T> list) {
+        return foldLeft(list, list(),x -> y -> prepend(y,x));
+    }
 }

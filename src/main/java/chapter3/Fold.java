@@ -33,5 +33,8 @@ public class Fold {
 
         String fiResult = iterativeFoldRight(l,"0",g);
         System.out.println(fiResult);
+
+        List<Integer> rl = reverse(l);
+        System.out.println(rl);
     }
 }
