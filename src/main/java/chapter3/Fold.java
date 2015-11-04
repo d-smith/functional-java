@@ -17,6 +17,8 @@ public class Fold {
         return "(" + i + " + " + s + ")";
     }
 
+    public static Integer doubleIt(Integer i) { return 2 * i; }
+
     public static void main(String... args) {
         List<Integer> l = list(1,2,3,4,5);
         int result = fold(l,0,x -> y -> x + y);
@@ -36,5 +38,10 @@ public class Fold {
 
         List<Integer> rl = reverse(l);
         System.out.println(rl);
+
+
+
+        List<Integer> doubled = mapViaFoldLeft(l, x -> doubleIt(x));
+        System.out.println(doubled);
     }
 }

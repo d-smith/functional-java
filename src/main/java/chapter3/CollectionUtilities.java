@@ -108,4 +108,8 @@ public class CollectionUtilities {
     public static <T> List<T> reverse(List<T> list) {
         return foldLeft(list, list(),x -> y -> prepend(y,x));
     }
+
+    public static <T,U> List<U> mapViaFoldLeft(List<T> list, Function<T, U> f) {
+        return foldLeft(list, list(), x -> y -> append(x, f.apply(y)));
+    }
 }
