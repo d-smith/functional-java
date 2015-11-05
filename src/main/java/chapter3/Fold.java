@@ -38,10 +38,12 @@ public class Fold {
 
         List<Integer> rl = reverse(l);
         System.out.println(rl);
-
-
-
+        
         List<Integer> doubled = mapViaFoldLeft(l, x -> doubleIt(x));
         System.out.println(doubled);
+
+        doubled = mapViaFoldRight(l, x -> doubleIt(x));
+        System.out.println(doubled);
+
     }
 }
