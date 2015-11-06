@@ -5,6 +5,7 @@ import com.fpinjava.common.Function;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class CollectionUtilities {
@@ -117,5 +118,8 @@ public class CollectionUtilities {
         return foldRight(list, list(), x -> y -> prepend(f.apply(x),y));
     }
 
+    public static <T> void forEach(Collection<T> ts, Effect<T> e) {
+        for(T t : ts) e.apply(t);
+    }
 
 }
