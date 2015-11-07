@@ -5,9 +5,7 @@ import com.fpinjava.common.Function;
 
 import java.util.List;
 
-import static chapter3.CollectionUtilities.forEach;
-import static chapter3.CollectionUtilities.list;
-import static chapter3.CollectionUtilities.map;
+import static chapter3.CollectionUtilities.*;
 
 public class FuncOutput {
     public static void main(String... args) {
@@ -23,6 +21,17 @@ public class FuncOutput {
         };
 
         forEach(modifiedPrices, printWith2Decimals);
+
+        Function<Executable,Function<Executable,Executable>> compose = x -> y -> () -> {
+            x.exec();
+            y.exec();
+        };
+
+        Executable ez = () -> {};
+
+        Executable program = foldLeft(modifiedPrices,ez, e -> d -> compose.apply(e).apply(()->printWith2Decimals.apply(d)));
+
+        program.exec();
 
     }
 }
