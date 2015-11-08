@@ -29,7 +29,7 @@ public class FuncOutput {
 
         Executable ez = () -> {};
 
-        Executable program = foldLeft(modifiedPrices,ez, e -> d -> compose.apply(e).apply(()->printWith2Decimals.apply(d)));
+        Executable program = foldLeft(modifiedPrices,ez, e -> d -> compose.apply(ez).apply(()->printWith2Decimals.apply(d)));
 
         program.exec();
 

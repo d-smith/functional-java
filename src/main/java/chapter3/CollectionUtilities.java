@@ -122,4 +122,15 @@ public class CollectionUtilities {
         for(T t : ts) e.apply(t);
     }
 
+    public static <T> List<T> unfold(T seed, Function<T,T> f, Function<T,Boolean> p) {
+        List<T> list = new ArrayList<>();
+        T temp = seed;
+        while(p.apply(temp)) {
+            list = append(list, temp);
+            temp = f.apply(temp);
+        }
+
+        return list;
+    }
+
 }
