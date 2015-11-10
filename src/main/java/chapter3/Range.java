@@ -4,9 +4,7 @@ package chapter3;
 import java.util.ArrayList;
 import java.util.List;
 
-import static chapter3.CollectionUtilities.append;
-import static chapter3.CollectionUtilities.list;
-import static chapter3.CollectionUtilities.prepend;
+import static chapter3.CollectionUtilities.*;
 
 public class Range {
     public static List<Integer> range(int start, int end) {
@@ -24,5 +22,9 @@ public class Range {
         return end <= start ?
                 list() :
                 prepend(start, recursiveRange(start + 1,end));
+    }
+
+    public static List<Integer> rangeViaUnfold(int start, int end) {
+        return unfold(start, x -> x + 1, y -> end >= y);
     }
 }
