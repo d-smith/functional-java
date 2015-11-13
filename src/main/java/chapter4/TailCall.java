@@ -15,7 +15,7 @@ public abstract class TailCall<T> {
     public static class Return<T> extends TailCall<T> {
         private final T t;
 
-        public Return(T t) {
+        private Return(T t) {
             this.t = t;
         }
 
@@ -40,13 +40,17 @@ public abstract class TailCall<T> {
     public static class Suspend<T> extends TailCall<T> {
         private final Supplier<TailCall<T>> resume;
 
-        Suspend(Supplier<TailCall<T>> resume) {
+        private Suspend(Supplier<TailCall<T>> resume) {
             this.resume = resume;
         }
 
         @Override
         public T eval() {
-            throw new IllegalStateException("Suspend has no value");
+            TailCall<T> tailRec = this;
+            while(tailRec.isSuspend()) {
+                tailRec = tailRec.resume();
+            }
+            return tailRec.eval();
         }
 
         @Override
@@ -63,5 +67,12 @@ public abstract class TailCall<T> {
     }
 
 
+    public static <T> Return<T> ret(T t) {
+        return new Return<>(t);
+    }
+
+    public static <T> Suspend<T> sus(Supplier<TailCall<T>> s) {
+        return new Suspend<>(s);
+    }
 
 }

@@ -1,18 +1,21 @@
 package chapter4;
 
 
+import static chapter4.TailCall.ret;
+import static chapter4.TailCall.sus;
+
 public class TailAdd {
-    static TailCall<Integer> add(int x, int y) {
-        return y == 0 ?
-                new TailCall.Return<>(x)
-                : new TailCall.Suspend<>(() -> add(x + 1, y - 1));
+    static int add(int x, int y) {
+        return addRec(x,y).eval();
+    }
+
+    private static TailCall<Integer> addRec(int x, int y) {
+        return y == 0
+                ? ret(x)
+                : sus(() -> addRec(x + 1, y - 1));
     }
 
     public static void main(String... args) {
-        TailCall<Integer> tailCall = add(3, 100000000);
-        while(tailCall.isSuspend()) {
-            tailCall = tailCall.resume();
-        }
-        System.out.println(tailCall.eval());
+        System.out.println(add(3, 100000000));
     }
 }
