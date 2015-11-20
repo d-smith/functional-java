@@ -4,8 +4,7 @@ import com.fpinjava.common.Function;
 
 import java.util.List;
 
-import static chapter3.CollectionUtilities.head;
-import static chapter3.CollectionUtilities.tail;
+import static chapter3.CollectionUtilities.*;
 import static chapter4.TailCall.ret;
 import static chapter4.TailCall.sus;
 
@@ -19,6 +18,21 @@ public class StackSafeCollectionUtils {
         return ts.isEmpty()
                 ? ret(identity)
                 : sus(() -> foldLeft_(tail(ts), f.apply(identity).apply(head(ts)), f));
+    }
+
+    public static List<Integer> recursiveRange(int start, int end) {
+        return recursiveRange_(list(), start,end).eval();
+    }
+
+    public static TailCall<List<Integer>> recursiveRange_(List<Integer> acc, int start, int end) {
+        return end <= start ?
+                ret(acc) :
+                sus(() -> recursiveRange_(append(acc, start), start + 1, end));
+    }
+
+    public static void main(String... args) {
+        List<Integer> r1 = recursiveRange(1,5);
+        System.out.println(r1);
     }
 }
 
