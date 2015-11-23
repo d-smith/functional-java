@@ -30,6 +30,16 @@ public class StackSafeCollectionUtils {
                 sus(() -> recursiveRange_(append(acc, start), start + 1, end));
     }
 
+    public static <T,U> U foldRight(List<T> l, U identity, Function<T, Function<U,U>> f) {
+        return foldRight_(identity, reverse(l), f).eval();
+    }
+
+    private static <T,U> TailCall<U> foldRight_(U acc, List<T> l, Function<T, Function<U,U>> f) {
+        return l.isEmpty()
+                ? ret(acc)
+                : sus(() -> foldRight_(f.apply(head(l)).apply(acc), tail(l),f));
+    }
+
     public static void main(String... args) {
         List<Integer> r1 = recursiveRange(1,5);
         System.out.println(r1);
