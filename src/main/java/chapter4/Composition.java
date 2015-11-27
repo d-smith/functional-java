@@ -22,6 +22,10 @@ public class Composition {
         return x -> foldLeft(reverse(list), x, a -> b -> b.apply(a));
     }
 
+    static <T> Function<T,T> composeAllViaFoldRight(List<Function<T,T>> list) {
+        return x -> foldRight(list, x, a -> a::apply);
+    }
+
     public static void main(String... args) {
         Function<Integer,Integer> add = y -> y + 1;
         System.out.println(
@@ -32,5 +36,6 @@ public class Composition {
         Function<String,String> f2 = x -> "{b" + x + "}";
         Function<String,String> f3 = x -> "[c" + x + "]";
         System.out.println(composeAllViaFoldLeft(list(f1,f2,f3)).apply("x"));
+        System.out.println(composeAllViaFoldRight(list(f1,f2,f3)).apply("x"));
     }
 }
