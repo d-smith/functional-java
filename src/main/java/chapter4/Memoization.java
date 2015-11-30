@@ -1,13 +1,13 @@
 package chapter4;
 
 
+import com.fpinjava.common.Function;
+import com.fpinjava.common.Tuple;
+
 import java.math.BigInteger;
 import java.util.List;
 
-import static chapter3.CollectionUtilities.append;
-import static chapter3.CollectionUtilities.list;
-import static chapter3.CollectionUtilities.tail;
-import static chapter3.CollectionUtilities.head;
+import static chapter3.CollectionUtilities.*;
 import static chapter4.TailCall.ret;
 import static chapter4.TailCall.sus;
 import static chapter4.StackSafeCollectionUtils.foldLeft;
@@ -34,8 +34,17 @@ public class Memoization {
                     : head(list) + foldLeft(tail(list),"", x -> y -> x + separator + y);
     }
 
+    public static String fiboCorecursive(int number) {
+        Tuple<BigInteger,BigInteger> seed = new Tuple<>(BigInteger.ZERO, BigInteger.ONE);
+        Function<Tuple<BigInteger,BigInteger>,Tuple<BigInteger,BigInteger>> f =
+                x -> new Tuple<>(x._2,x._1.add(x._2));
+        List<BigInteger> list = map(iterate(seed,f, number+2), x -> x._1);
+        return makeString(list, ", ");
+    }
+
     public static void main(String... args) {
         System.out.println(fibo(10));
+        System.out.println(fiboCorecursive(10));
     }
 
 }
