@@ -5,6 +5,7 @@ public abstract class List<A> {
     public abstract A head();
     public abstract List<A> tail();
     public abstract boolean isEmpty();
+    public abstract List<A> cons(A a);
 
     @SuppressWarnings("rawtypes")
     public static final List NIL = new Nil();
@@ -24,6 +25,10 @@ public abstract class List<A> {
 
         public boolean isEmpty() {
             return true;
+        }
+
+        public List<A> cons(A a) {
+            return new Cons<>(a, this);
         }
     }
 
@@ -46,6 +51,10 @@ public abstract class List<A> {
 
         public boolean isEmpty() {
             return false;
+        }
+
+        public List<A> cons(A a) {
+            return new Cons<>(a,this);
         }
     }
 
