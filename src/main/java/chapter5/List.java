@@ -6,6 +6,7 @@ public abstract class List<A> {
     public abstract List<A> tail();
     public abstract boolean isEmpty();
     public abstract List<A> cons(A a);
+    public abstract List<A> setHead(A a);
 
     @SuppressWarnings("rawtypes")
     public static final List NIL = new Nil();
@@ -29,6 +30,10 @@ public abstract class List<A> {
 
         public List<A> cons(A a) {
             return new Cons<>(a, this);
+        }
+
+        public List<A> setHead(A a) {
+            throw new IllegalStateException("setHead called on empty list");
         }
     }
 
@@ -55,6 +60,10 @@ public abstract class List<A> {
 
         public List<A> cons(A a) {
             return new Cons<>(a,this);
+        }
+
+        public List<A> setHead(A a) {
+            return new Cons(a,tail());
         }
     }
 
