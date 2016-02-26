@@ -1,6 +1,11 @@
 package chapter5;
 
 
+import chapter4.TailCall;
+
+import static chapter4.TailCall.ret;
+import static chapter4.TailCall.sus;
+
 public abstract class List<A> {
     public abstract A head();
     public abstract List<A> tail();
@@ -80,5 +85,16 @@ public abstract class List<A> {
         }
 
         return n;
+    }
+
+    public String toString() {
+        return String.format("[%sNIL]",
+                toString(new StringBuilder(), this).eval());
+    }
+
+    private TailCall<StringBuilder> toString(StringBuilder acc, List<A> list) {
+        return list.isEmpty() ?
+                ret(acc)
+                : sus(()->toString(acc.append(list.head()).append(","),list.tail()));
     }
 }
