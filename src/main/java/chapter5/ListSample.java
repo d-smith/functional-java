@@ -18,5 +18,12 @@ public class ListSample {
         System.out.println("set head on ex4 to -1");
         ex4 = ex4.setHead(-1);
         System.out.println(ex4);
+
+        System.out.println("\nA list:");
+        List<Integer> bl = list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+        System.out.println(bl);
+        System.out.println(bl.drop(1));
+        System.out.println(bl.drop(5));
+        System.out.println(bl.drop(100));
     }
 }

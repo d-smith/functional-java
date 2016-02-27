@@ -12,6 +12,7 @@ public abstract class List<A> {
     public abstract boolean isEmpty();
     public abstract List<A> cons(A a);
     public abstract List<A> setHead(A a);
+    public abstract List<A> drop(int n);
 
     @SuppressWarnings("rawtypes")
     public static final List NIL = new Nil();
@@ -40,6 +41,8 @@ public abstract class List<A> {
         public List<A> setHead(A a) {
             throw new IllegalStateException("setHead called on empty list");
         }
+
+        public List<A> drop(int n) { return this; }
     }
 
     private static class Cons<A> extends List<A> {
@@ -70,6 +73,19 @@ public abstract class List<A> {
         public List<A> setHead(A a) {
             return new Cons(a,tail());
         }
+
+        public List<A> drop(int n) {
+            return n <= 0
+                    ? this
+                    : drop_(this,n).eval();
+        }
+
+        private TailCall<List<A>> drop_(List<A> list, int n) {
+            return n <= 0 || list.isEmpty()
+                    ? ret(list)
+                    : sus(() -> drop_(list.tail(), n - 1));
+        }
+
     }
 
     @SuppressWarnings("unchecked")
