@@ -1,6 +1,8 @@
 package chapter5;
 
 
+import com.fpinjava.common.Function;
+
 import static chapter5.List.list;
 
 public class ListSample {
@@ -25,5 +27,8 @@ public class ListSample {
         System.out.println(bl.drop(1));
         System.out.println(bl.drop(5));
         System.out.println(bl.drop(100));
+
+        Function<Integer,Boolean> lessThanTen = (i) -> i < 10;
+        System.out.println(bl.dropWhile(lessThanTen));
     }
 }

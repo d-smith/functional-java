@@ -2,6 +2,7 @@ package chapter5;
 
 
 import chapter4.TailCall;
+import com.fpinjava.common.Function;
 
 import static chapter4.TailCall.ret;
 import static chapter4.TailCall.sus;
@@ -13,6 +14,7 @@ public abstract class List<A> {
     public abstract List<A> cons(A a);
     public abstract List<A> setHead(A a);
     public abstract List<A> drop(int n);
+    public abstract List<A> dropWhile(Function<A, Boolean> f);
 
     @SuppressWarnings("rawtypes")
     public static final List NIL = new Nil();
@@ -43,6 +45,10 @@ public abstract class List<A> {
         }
 
         public List<A> drop(int n) { return this; }
+
+        public List<A> dropWhile(Function<A, Boolean> f) { return this; }
+
+
     }
 
     private static class Cons<A> extends List<A> {
@@ -84,6 +90,16 @@ public abstract class List<A> {
             return n <= 0 || list.isEmpty()
                     ? ret(list)
                     : sus(() -> drop_(list.tail(), n - 1));
+        }
+
+        public List<A> dropWhile(Function<A, Boolean> f) {
+            return dropWhile_(this,f).eval();
+        }
+
+        private TailCall<List<A>> dropWhile_(List<A> list, Function<A, Boolean> f) {
+            return !list.isEmpty() && f.apply(list.head())
+                    ? sus(() -> dropWhile_(list.tail(), f))
+                    : ret(list);
         }
 
     }
