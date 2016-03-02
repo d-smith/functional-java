@@ -30,5 +30,7 @@ public class ListSample {
 
         Function<Integer,Boolean> lessThanTen = (i) -> i < 10;
         System.out.println(bl.dropWhile(lessThanTen));
+
+        System.out.println(List.concat(bl, bl));
     }
 }

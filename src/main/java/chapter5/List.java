@@ -16,6 +16,7 @@ public abstract class List<A> {
     public abstract List<A> drop(int n);
     public abstract List<A> dropWhile(Function<A, Boolean> f);
 
+
     @SuppressWarnings("rawtypes")
     public static final List NIL = new Nil();
 
@@ -122,6 +123,12 @@ public abstract class List<A> {
     public String toString() {
         return String.format("[%sNIL]",
                 toString(new StringBuilder(), this).eval());
+    }
+
+    public static <A> List<A> concat(List<A> list1, List<A> list2) {
+        return list1.isEmpty()
+                ? list2
+                : new Cons<>(list1.head(), concat(list1.tail(), list2));
     }
 
     private TailCall<StringBuilder> toString(StringBuilder acc, List<A> list) {
