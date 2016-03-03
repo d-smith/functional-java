@@ -32,5 +32,6 @@ public class ListSample {
         System.out.println(bl.dropWhile(lessThanTen));
 
         System.out.println(List.concat(bl, bl));
+        System.out.println(bl.init());
     }
 }

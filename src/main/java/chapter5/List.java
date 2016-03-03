@@ -15,6 +15,8 @@ public abstract class List<A> {
     public abstract List<A> setHead(A a);
     public abstract List<A> drop(int n);
     public abstract List<A> dropWhile(Function<A, Boolean> f);
+    public abstract List<A> init();
+    public abstract List<A> reverse();
 
 
     @SuppressWarnings("rawtypes")
@@ -49,6 +51,9 @@ public abstract class List<A> {
 
         public List<A> dropWhile(Function<A, Boolean> f) { return this; }
 
+        public List<A> init() { return this; }
+
+        public List<A> reverse() { return this; }
 
     }
 
@@ -101,6 +106,20 @@ public abstract class List<A> {
             return !list.isEmpty() && f.apply(list.head())
                     ? sus(() -> dropWhile_(list.tail(), f))
                     : ret(list);
+        }
+
+        public List<A> reverse() {
+            return reverse_(list(), this).eval();
+        }
+
+        private TailCall<List<A>> reverse_(List<A> acc, List<A> list) {
+            return list.isEmpty()
+                    ? ret(acc)
+                    : sus(() -> reverse_(new Cons<>(list.head(), acc), list.tail()));
+        }
+
+        public List<A> init() {
+            return reverse().tail().reverse();
         }
 
     }
