@@ -155,4 +155,11 @@ public abstract class List<A> {
                 ret(acc)
                 : sus(()->toString(acc.append(list.head()).append(","),list.tail()));
     }
+
+    public static Integer sum(List<Integer> list) {
+        return list.isEmpty()
+                ? 0
+                : list.head() + sum(list.tail());
+
+    }
 }
