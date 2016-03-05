@@ -162,4 +162,10 @@ public abstract class List<A> {
                 : list.head() + sum(list.tail());
 
     }
+
+    public static Double product(List<Double> list) {
+        return list.isEmpty()
+                ? 1.0
+                : list.head() * product(list.tail());
+    }
 }

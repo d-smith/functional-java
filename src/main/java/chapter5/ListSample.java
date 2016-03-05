@@ -33,6 +33,7 @@ public class ListSample {
 
         System.out.println(List.concat(bl, bl));
         System.out.println(bl.init());
-        System.out.print(List.sum(list(1,2,3,4)));
+        System.out.println(List.sum(list(1,2,3,4)));
+        System.out.println(List.product(list(1.0,2.0,3.0,4.0)));
     }
 }
