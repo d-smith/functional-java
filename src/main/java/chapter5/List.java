@@ -17,6 +17,7 @@ public abstract class List<A> {
     public abstract List<A> dropWhile(Function<A, Boolean> f);
     public abstract List<A> init();
     public abstract List<A> reverse();
+    public abstract int length();
 
 
     @SuppressWarnings("rawtypes")
@@ -54,6 +55,8 @@ public abstract class List<A> {
         public List<A> init() { return this; }
 
         public List<A> reverse() { return this; }
+
+        public int length() { return 0; }
 
     }
 
@@ -122,6 +125,10 @@ public abstract class List<A> {
             return reverse().tail().reverse();
         }
 
+        public int length() {
+            return foldRight(this,0,x -> y -> y + 1);
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -157,15 +164,17 @@ public abstract class List<A> {
     }
 
     public static Integer sum(List<Integer> list) {
-        return list.isEmpty()
-                ? 0
-                : list.head() + sum(list.tail());
+        return foldRight(list, 0, x -> y -> x + y);
 
     }
 
     public static Double product(List<Double> list) {
+        return foldRight(list, 1.0, x -> y -> x * y);
+    }
+
+    public static <A,B> B foldRight(List<A> list, B n, Function<A, Function<B,B>> f) {
         return list.isEmpty()
-                ? 1.0
-                : list.head() * product(list.tail());
+                ? n
+                : f.apply(list.head()).apply(foldRight(list.tail(), n, f));
     }
 }
