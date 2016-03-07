@@ -18,6 +18,7 @@ public abstract class List<A> {
     public abstract List<A> init();
     public abstract List<A> reverse();
     public abstract int length();
+    public abstract <B> B foldLeft(B identity, Function<B, Function<A, B>> f);
 
 
     @SuppressWarnings("rawtypes")
@@ -58,6 +59,10 @@ public abstract class List<A> {
 
         public int length() { return 0; }
 
+        @Override
+        public <B> B foldLeft(B identity, Function<B, Function<A, B>> f) {
+            return identity;
+        }
     }
 
     private static class Cons<A> extends List<A> {
@@ -126,9 +131,20 @@ public abstract class List<A> {
         }
 
         public int length() {
-            return foldRight(this,0,x -> y -> y + 1);
+            //internal compilter error -> return this.foldLeft(0, x -> y -> x + 1);
+            return foldRight(this,0, x -> y -> y + 1);
         }
 
+        @Override
+        public <B> B foldLeft(B identity, Function<B, Function<A, B>> f) {
+            return foldLeft_(identity, this, f).eval();
+        }
+
+        public <B> TailCall<B> foldLeft_(B acc, List<A> list, Function<B, Function<A, B>> f) {
+            return list.isEmpty()
+                    ? ret(acc)
+                    : sus(() -> foldLeft_(f.apply(acc).apply(list.head()), list.tail(),f));
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -164,12 +180,11 @@ public abstract class List<A> {
     }
 
     public static Integer sum(List<Integer> list) {
-        return foldRight(list, 0, x -> y -> x + y);
-
+        return list.foldLeft(0,x -> y -> x + y);
     }
 
     public static Double product(List<Double> list) {
-        return foldRight(list, 1.0, x -> y -> x * y);
+        return list.foldLeft(1.0, x -> y -> x * y);
     }
 
     public static <A,B> B foldRight(List<A> list, B n, Function<A, Function<B,B>> f) {
