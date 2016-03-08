@@ -36,5 +36,7 @@ public class ListSample {
         System.out.println(List.sum(list(1,2,3,4)));
         System.out.println(List.product(list(1.0,2.0,3.0,4.0)));
         System.out.println("length of big list: " + bl.length());
+
+        System.out.println(list(1,2,3,4,5).reverse());
     }
 }

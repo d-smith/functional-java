@@ -117,14 +117,10 @@ public abstract class List<A> {
         }
 
         public List<A> reverse() {
-            return reverse_(list(), this).eval();
+            return foldLeft(list(), x -> x::cons);
         }
 
-        private TailCall<List<A>> reverse_(List<A> acc, List<A> list) {
-            return list.isEmpty()
-                    ? ret(acc)
-                    : sus(() -> reverse_(new Cons<>(list.head(), acc), list.tail()));
-        }
+
 
         public List<A> init() {
             return reverse().tail().reverse();
