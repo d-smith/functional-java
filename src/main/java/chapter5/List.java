@@ -183,9 +183,7 @@ public abstract class List<A> {
         return list.foldLeft(1.0, x -> y -> x * y);
     }
 
-    public static <A,B> B foldRight(List<A> list, B n, Function<A, Function<B,B>> f) {
-        return list.isEmpty()
-                ? n
-                : f.apply(list.head()).apply(foldRight(list.tail(), n, f));
+    public static <A,B> B foldRight(List<A> list,  B n, Function<A, Function<B,B>> f) {
+        return list.reverse().foldLeft(n, x -> y -> f.apply(y).apply(x));
     }
 }
