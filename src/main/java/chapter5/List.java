@@ -19,6 +19,7 @@ public abstract class List<A> {
     public abstract List<A> reverse();
     public abstract int length();
     public abstract <B> B foldLeft(B identity, Function<B, Function<A, B>> f);
+    public abstract <B> B foldRight(B identity, Function<A, Function<B,B>>  f);
 
 
     @SuppressWarnings("rawtypes")
@@ -63,6 +64,9 @@ public abstract class List<A> {
         public <B> B foldLeft(B identity, Function<B, Function<A, B>> f) {
             return identity;
         }
+
+        @Override
+        public <B> B foldRight(B identity, Function<A, Function<B, B>> f) { return identity; }
     }
 
     private static class Cons<A> extends List<A> {
@@ -127,8 +131,15 @@ public abstract class List<A> {
         }
 
         public int length() {
-            //internal compilter error -> return this.foldLeft(0, x -> y -> x + 1);
-            return foldRight(this,0, x -> y -> y + 1);
+           //Internal compiler error -->  return this.foldLeft(0, x -> y -> x + 1);
+           //Internal compiler error --> return foldRight(0, x -> y -> y + 1);
+            return length_(this, 0).eval();
+        }
+
+        private TailCall<Integer> length_(List<A> list, int acc) {
+            return list.isEmpty()
+                    ? ret(acc)
+                    : sus(() -> length_(list.tail(), acc + 1));
         }
 
         @Override
@@ -140,6 +151,17 @@ public abstract class List<A> {
             return list.isEmpty()
                     ? ret(acc)
                     : sus(() -> foldLeft_(f.apply(acc).apply(list.head()), list.tail(),f));
+        }
+
+        @Override
+        public <B> B foldRight(B identity, Function<A, Function<B, B>> f) {
+            return foldRight_(identity, this, identity, f).eval();
+        }
+
+        private <B> TailCall<B> foldRight_(B acc, List<A> list, B identity, Function<A,Function<B,B>> f) {
+            return list.isEmpty()
+                        ? ret(acc)
+                        : sus(() -> foldRight_(f.apply(list.head()).apply(acc), list.tail(),identity,f));
         }
     }
 
@@ -183,7 +205,4 @@ public abstract class List<A> {
         return list.foldLeft(1.0, x -> y -> x * y);
     }
 
-    public static <A,B> B foldRight(List<A> list,  B n, Function<A, Function<B,B>> f) {
-        return list.reverse().foldLeft(n, x -> y -> f.apply(y).apply(x));
-    }
 }
