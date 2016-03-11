@@ -185,10 +185,12 @@ public abstract class List<A> {
                 toString(new StringBuilder(), this).eval());
     }
 
+    public static <A, B> B foldRight(List<A> list, B n, Function<A, Function<B, B>> f ) {
+        return list.foldRight(n, f);
+    }
+
     public static <A> List<A> concat(List<A> list1, List<A> list2) {
-        return list1.isEmpty()
-                ? list2
-                : new Cons<>(list1.head(), concat(list1.tail(), list2));
+        return foldRight(list1, list2, x -> y -> new Cons<>(x, y));
     }
 
     private TailCall<StringBuilder> toString(StringBuilder acc, List<A> list) {
@@ -196,6 +198,8 @@ public abstract class List<A> {
                 ret(acc)
                 : sus(()->toString(acc.append(list.head()).append(","),list.tail()));
     }
+
+    public static <A> List<A> flatten(List<List<A>> list) { return foldRight(list, List.<A>list(), x -> y -> concat(x,y)); }
 
     public static Integer sum(List<Integer> list) {
         return list.foldLeft(0,x -> y -> x + y);
