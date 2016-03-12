@@ -155,7 +155,8 @@ public abstract class List<A> {
 
         @Override
         public <B> B foldRight(B identity, Function<A, Function<B, B>> f) {
-            return foldRight_(identity, this, identity, f).eval();
+            //return foldRight_(identity, this, identity, f).eval();
+            return reverse().foldLeft(identity, x -> y -> f.apply(y).apply(x));
         }
 
         private <B> TailCall<B> foldRight_(B acc, List<A> list, B identity, Function<A,Function<B,B>> f) {
@@ -207,6 +208,10 @@ public abstract class List<A> {
 
     public static Double product(List<Double> list) {
         return list.foldLeft(1.0, x -> y -> x * y);
+    }
+
+    public static List<Integer> triple(List<Integer> list) {
+        return foldRight(list, list(), x -> y -> y.cons(x*3));
     }
 
 }
