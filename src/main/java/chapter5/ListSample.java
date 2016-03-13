@@ -41,5 +41,10 @@ public class ListSample {
 
         System.out.println(List.flatten(list(list(1,2,3),list(4,5,6))));
         System.out.println(List.triple(bl));
+
+        List<Double> dl = list(1.0,2.0, 3.0);
+        System.out.println(List.doubleToString(dl));
+
+        System.out.println(bl.map(x -> x*3));
     }
 }

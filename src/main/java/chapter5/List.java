@@ -20,6 +20,7 @@ public abstract class List<A> {
     public abstract int length();
     public abstract <B> B foldLeft(B identity, Function<B, Function<A, B>> f);
     public abstract <B> B foldRight(B identity, Function<A, Function<B,B>>  f);
+    public abstract <B> List<B> map(Function<A,B> f);
 
 
     @SuppressWarnings("rawtypes")
@@ -67,6 +68,9 @@ public abstract class List<A> {
 
         @Override
         public <B> B foldRight(B identity, Function<A, Function<B, B>> f) { return identity; }
+
+        @Override
+        public <B> List<B> map(Function<A, B> f) {return foldRight(list(),h -> t -> new Cons<>(f.apply(h),t));}
     }
 
     private static class Cons<A> extends List<A> {
@@ -164,6 +168,9 @@ public abstract class List<A> {
                         ? ret(acc)
                         : sus(() -> foldRight_(f.apply(list.head()).apply(acc), list.tail(),identity,f));
         }
+
+        @Override
+        public <B> List<B> map(Function<A, B> f) {return foldRight(list(),h -> t -> new Cons<>(f.apply(h),t));}
     }
 
     @SuppressWarnings("unchecked")
@@ -211,7 +218,11 @@ public abstract class List<A> {
     }
 
     public static List<Integer> triple(List<Integer> list) {
-        return foldRight(list, list(), x -> y -> y.cons(x*3));
+        return foldRight(list, list(), x -> y -> y.cons(x * 3));
+    }
+
+    public static List<String> doubleToString(List<Double> list) {
+        return foldRight(list, list(), x -> y -> y.cons(x.toString()));
     }
 
 }
