@@ -21,6 +21,7 @@ public abstract class List<A> {
     public abstract <B> B foldLeft(B identity, Function<B, Function<A, B>> f);
     public abstract <B> B foldRight(B identity, Function<A, Function<B,B>>  f);
     public abstract <B> List<B> map(Function<A,B> f);
+    public abstract List<A> filter(Function<A,Boolean> f);
 
 
     @SuppressWarnings("rawtypes")
@@ -71,6 +72,11 @@ public abstract class List<A> {
 
         @Override
         public <B> List<B> map(Function<A, B> f) {return foldRight(list(),h -> t -> new Cons<>(f.apply(h),t));}
+
+        @Override
+        public List<A> filter(Function<A, Boolean> f) {
+            return foldRight(list(), h -> t -> f.apply(h) ? new Cons<>(h,t) : t);
+        }
     }
 
     private static class Cons<A> extends List<A> {
@@ -171,6 +177,11 @@ public abstract class List<A> {
 
         @Override
         public <B> List<B> map(Function<A, B> f) {return foldRight(list(),h -> t -> new Cons<>(f.apply(h),t));}
+
+        @Override
+        public List<A> filter(Function<A, Boolean> f) {
+            return foldRight(list(), h -> t -> f.apply(h) ? new Cons<>(h,t) : t);
+        }
     }
 
     @SuppressWarnings("unchecked")

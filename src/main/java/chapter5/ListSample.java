@@ -46,5 +46,7 @@ public class ListSample {
         System.out.println(List.doubleToString(dl));
 
         System.out.println(bl.map(x -> x*3));
+
+        System.out.println(bl.filter(x -> x % 2 == 0));
     }
 }
