@@ -48,5 +48,7 @@ public class ListSample {
         System.out.println(bl.map(x -> x*3));
 
         System.out.println(bl.filter(x -> x % 2 == 0));
+
+        System.out.println(list(1,2,3).flatMap(x -> list(x,-x)));
     }
 }
