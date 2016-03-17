@@ -22,6 +22,7 @@ public abstract class List<A> {
     public abstract <B> B foldRight(B identity, Function<A, Function<B,B>>  f);
     public abstract <B> List<B> map(Function<A,B> f);
     public abstract List<A> filter(Function<A,Boolean> f);
+    public abstract List<A> filterViaFlatmap(Function<A,Boolean> f);
     public abstract <B> List<B> flatMap(Function<A,List<B>>f);
 
 
@@ -77,6 +78,11 @@ public abstract class List<A> {
         @Override
         public List<A> filter(Function<A, Boolean> f) {
             return foldRight(list(), h -> t -> f.apply(h) ? new Cons<>(h,t) : t);
+        }
+
+        @Override
+        public List<A> filterViaFlatmap(Function<A, Boolean> f) {
+            return flatMap(a -> f.apply(a) ? List.list(a) : List.list());
         }
 
         @Override
@@ -187,6 +193,11 @@ public abstract class List<A> {
         @Override
         public List<A> filter(Function<A, Boolean> f) {
             return foldRight(list(), h -> t -> f.apply(h) ? new Cons<>(h,t) : t);
+        }
+
+        @Override
+        public List<A> filterViaFlatmap(Function<A, Boolean> f) {
+            return flatMap(a -> f.apply(a) ? List.list(a) : List.list());
         }
 
         @Override
