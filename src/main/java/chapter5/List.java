@@ -240,7 +240,9 @@ public abstract class List<A> {
                 : sus(()->toString(acc.append(list.head()).append(","),list.tail()));
     }
 
-    public static <A> List<A> flatten(List<List<A>> list) { return foldRight(list, List.<A>list(), x -> y -> concat(x,y)); }
+    public static <A> List<A> flatten(List<List<A>> list) {
+        return list.flatMap(x -> x);
+    }
 
     public static Integer sum(List<Integer> list) {
         return list.foldLeft(0,x -> y -> x + y);

@@ -37,9 +37,6 @@ public class ListSample {
         System.out.println(List.product(list(1.0,2.0,3.0,4.0)));
         System.out.println("length of big list: " + bl.length());
 
-        System.out.println(list(1,2,3,4,5).reverse());
-
-        System.out.println(List.flatten(list(list(1,2,3),list(4,5,6))));
         System.out.println(List.triple(bl));
 
         List<Double> dl = list(1.0,2.0, 3.0);
@@ -51,5 +48,9 @@ public class ListSample {
         System.out.println(bl.filterViaFlatmap(x -> x % 2 == 0));
 
         System.out.println(list(1,2,3).flatMap(x -> list(x,-x)));
+
+        System.out.println(list(1,2,3,4,5).reverse());
+
+        System.out.println(List.flatten(list(list(1,2,3),list(4,5,6))));
     }
 }
