@@ -1,11 +1,13 @@
 package chapter6;
 
+import com.fpinjava.common.Supplier;
 
 public abstract class Option<A> {
     @SuppressWarnings("rawtypes")
     private static Option none = new None();
     public abstract A getOrThrow();
-    public abstract A getOrElse(A defaultVal);
+    public abstract A getOrElse(Supplier<A> defaultValue);
+
 
     private static class None<A> extends Option<A> {
         @Override
@@ -21,8 +23,8 @@ public abstract class Option<A> {
         }
 
         @Override
-        public A getOrElse(A defaultVal) {
-            return defaultVal;
+        public A getOrElse(Supplier<A> defaultValue) {
+            return defaultValue.get();
         }
     }
 
@@ -45,7 +47,7 @@ public abstract class Option<A> {
         }
 
         @Override
-        public A getOrElse(A defaultVal) {
+        public A getOrElse(Supplier<A> defaultValue) {
             return this.value;
         }
     }
