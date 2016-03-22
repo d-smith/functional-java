@@ -23,6 +23,10 @@ public class ListMax {
 
         System.out.println(String.format("List of empty getOrElse %s",max.apply(empty).getOrElse(() -> ListMax.getDefault())));
         System.out.println(String.format("List of aList getOrElse %s",max.apply(aList).getOrElse(() -> 1000)));
+
+        System.out.println(
+                max.apply(List.list(7)).map(x -> String.format("we have %d",x))
+        );
     }
 
 }

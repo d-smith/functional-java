@@ -1,5 +1,6 @@
 package chapter6;
 
+import com.fpinjava.common.Function;
 import com.fpinjava.common.Supplier;
 
 public abstract class Option<A> {
@@ -7,6 +8,7 @@ public abstract class Option<A> {
     private static Option none = new None();
     public abstract A getOrThrow();
     public abstract A getOrElse(Supplier<A> defaultValue);
+    public abstract <B> Option<B> map(Function<A, B> f);
 
 
     private static class None<A> extends Option<A> {
@@ -25,6 +27,11 @@ public abstract class Option<A> {
         @Override
         public A getOrElse(Supplier<A> defaultValue) {
             return defaultValue.get();
+        }
+
+        @Override
+        public <B> Option<B> map(Function<A, B> f) {
+            return none();
         }
     }
 
@@ -49,6 +56,11 @@ public abstract class Option<A> {
         @Override
         public A getOrElse(Supplier<A> defaultValue) {
             return this.value;
+        }
+
+        @Override
+        public <B> Option<B> map(Function<A, B> f) {
+            return some(f.apply(this.value));
         }
     }
 
