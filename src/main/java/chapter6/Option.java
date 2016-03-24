@@ -13,6 +13,11 @@ public abstract class Option<A> {
     public <B> Option<B> flatMap(Function<A,Option<B>> f) {
         return map(f).getOrElse(Option::none);
     }
+
+    public Option<A> orElse(Supplier<Option<A>> defaultValue) {
+        return map(x -> this).getOrElse(defaultValue);
+    }
+
     private static class None<A> extends Option<A> {
         @Override
         public A getOrThrow() {

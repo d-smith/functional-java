@@ -27,6 +27,8 @@ public class ListMax {
         System.out.println(
                 max.apply(List.list(7)).map(x -> String.format("we have %d",x))
         );
+
+        System.out.println(max.apply(aList).orElse(() -> Option.none()).getOrElse(() -> 12));
     }
 
 }
