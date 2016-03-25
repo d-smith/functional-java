@@ -29,6 +29,11 @@ public class ListMax {
         );
 
         System.out.println(max.apply(aList).orElse(() -> Option.none()).getOrElse(() -> 12));
+
+        Option<Integer> some5 = Option.some(5);
+        System.out.println(some5.filter(x -> x > 1));
+        System.out.println(some5.filter(x -> x < 1));
+
     }
 
 }

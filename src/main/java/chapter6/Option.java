@@ -18,6 +18,12 @@ public abstract class Option<A> {
         return map(x -> this).getOrElse(defaultValue);
     }
 
+    public Option<A> filter(Function<A,Boolean>f) {
+        return flatMap(x -> f.apply(x)
+                ? this
+                : none());
+    }
+
     private static class None<A> extends Option<A> {
         @Override
         public A getOrThrow() {
