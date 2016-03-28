@@ -87,7 +87,13 @@ public abstract class Option<A> {
     }
 
     public static <A,B> Function<Option<A>,Option<B>> lift(Function<A,B> f) {
-        return x -> x.map(f);
+        return x -> {
+            try {
+                return x.map(f);
+            } catch(Throwable t) {
+                return none();
+            }
+        };
     }
 
 }
