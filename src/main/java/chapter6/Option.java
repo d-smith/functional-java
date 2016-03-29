@@ -96,4 +96,14 @@ public abstract class Option<A> {
         };
     }
 
+    public static <A,B,C> Option<C> map2(Option<A> a, Option<B> b,
+                                         Function<A, Function<B,C>> f) {
+        return a.flatMap(ax -> b.map(bx -> f.apply(ax).apply(bx)));
+    }
+
+    public static <A,B,C,D> Option<D> map2(Option<A> a, Option<B> b, Option<C> c,
+                                           Function<A, Function<B,Function<C,D>>>f) {
+        return a.flatMap(ax -> b.flatMap(bx -> c.map(cx -> f.apply(ax).apply(bx).apply(cx))));
+    }
+
 }
