@@ -1,5 +1,6 @@
 package chapter6;
 
+import chapter5.List;
 import com.fpinjava.common.Function;
 import com.fpinjava.common.Supplier;
 
@@ -96,6 +97,17 @@ public abstract class Option<A> {
         };
     }
 
+    public static <A, B> Function<A, Option<B>> hlift(Function<A, B> f) {
+        return x -> {
+            try {
+                return Option.some(x).map(f);
+            } catch (Exception e) {
+                return Option.none();
+            }
+        };
+    }
+
+
     public static <A,B,C> Option<C> map2(Option<A> a, Option<B> b,
                                          Function<A, Function<B,C>> f) {
         return a.flatMap(ax -> b.map(bx -> f.apply(ax).apply(bx)));
@@ -104,6 +116,10 @@ public abstract class Option<A> {
     public static <A,B,C,D> Option<D> map2(Option<A> a, Option<B> b, Option<C> c,
                                            Function<A, Function<B,Function<C,D>>>f) {
         return a.flatMap(ax -> b.flatMap(bx -> c.map(cx -> f.apply(ax).apply(bx).apply(cx))));
+    }
+
+    public static <A> Option<List<A>> sequence(List<Option<A>> list) {
+        return list.foldRight(some(List.list()),x -> y -> map2(x,y,a -> b -> b.cons(a)));
     }
 
 }
