@@ -118,8 +118,12 @@ public abstract class Option<A> {
         return a.flatMap(ax -> b.flatMap(bx -> c.map(cx -> f.apply(ax).apply(bx).apply(cx))));
     }
 
+    public static <A,B> Option<List<B>> traverse(List<A> list, Function<A,Option<B>> f) {
+        return list.foldRight(some(List.list()),x -> y -> map2(f.apply(x),y,a ->b -> b.cons(a)));
+    }
+
     public static <A> Option<List<A>> sequence(List<Option<A>> list) {
-        return list.foldRight(some(List.list()),x -> y -> map2(x,y,a -> b -> b.cons(a)));
+        return traverse(list, x -> x);
     }
 
 }
