@@ -47,6 +47,16 @@ public abstract class Option<A> {
         public <B> Option<B> map(Function<A, B> f) {
             return none();
         }
+
+        @Override
+        public int hashCode() {
+            return 0;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return this == o || o instanceof None;
+        }
     }
 
     private static class Some<A> extends Option<A> {
@@ -75,6 +85,17 @@ public abstract class Option<A> {
         @Override
         public <B> Option<B> map(Function<A, B> f) {
             return some(f.apply(this.value));
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return (this == o || o instanceof Some)
+                    && this.value.equals(((Some<?>)o).value);
+        }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
         }
     }
 
