@@ -20,5 +20,9 @@ public class ListMax {
         System.out.println(String.format("List of empty max is %s",max.apply(empty)));
         List<Integer> aList = List.list(1,2,3,4,5);
         System.out.println(String.format("List of aList max is %s",max.apply(aList)));
+
+        Function<Integer,Integer> timesTwo = x -> x * 2;
+
+        System.out.println(max.apply(aList).map(timesTwo));
     }
 }

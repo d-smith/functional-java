@@ -1,36 +1,53 @@
 package chapter7;
 
+import com.fpinjava.common.Function;
 
-public abstract class Either<T,U> {
-    private static class Left<T,U> extends Either<T,U> {
-        private final T value;
+public abstract class Either<E,A> {
 
-        private Left(T value) {
+    public abstract <B> Either<E, B> map(Function<A, B> f);
+
+
+    private static class Left<E,A> extends Either<E,A> {
+        private final E value;
+
+        private Left(E value) {
             this.value = value;
         }
 
         @Override public String toString() {
             return String.format("Left(%s)",value);
         }
+
+        @Override
+        public <B> Either<E, B> map(Function<A, B> f) {
+            return new Left<>(value);
+        }
     }
 
-    private static class Right<T,U> extends Either<T,U> {
-        private final U value;
+    private static class Right<E,A> extends Either<E,A> {
+        private final A value;
 
-        private Right(U value) {
+        private Right(A value) {
             this.value = value;
         }
 
         @Override public String toString() {
             return String.format("Right(%s)",value);
         }
+
+        @Override
+        public <B> Either<E, B> map(Function<A, B> f) {
+            return new Right<>(f.apply(value));
+        }
     }
 
-    public static <T,U> Either<T,U> left(T value) {
+    public static <E,A> Either<E,A> left(E value) {
         return new Left<>(value);
     }
 
-    public static <T,U> Either<T,U> right(U value) {
+    public static <E,A> Either<E,A> right(A value) {
         return new Right<>(value);
     }
+
+
 }
