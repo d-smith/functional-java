@@ -5,6 +5,7 @@ import com.fpinjava.common.Function;
 public abstract class Either<E,A> {
 
     public abstract <B> Either<E, B> map(Function<A, B> f);
+    public abstract <B> Either<E, B> flatMap(Function<A, Either<E,B>> f);
 
 
     private static class Left<E,A> extends Either<E,A> {
@@ -20,6 +21,11 @@ public abstract class Either<E,A> {
 
         @Override
         public <B> Either<E, B> map(Function<A, B> f) {
+            return new Left<>(value);
+        }
+
+        @Override
+        public <B> Either<E, B> flatMap(Function<A, Either<E, B>> f) {
             return new Left<>(value);
         }
     }
@@ -38,6 +44,11 @@ public abstract class Either<E,A> {
         @Override
         public <B> Either<E, B> map(Function<A, B> f) {
             return new Right<>(f.apply(value));
+        }
+
+        @Override
+        public <B> Either<E, B> flatMap(Function<A, Either<E, B>> f) {
+            return f.apply(value);
         }
     }
 

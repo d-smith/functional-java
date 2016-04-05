@@ -2,7 +2,6 @@ package chapter7;
 
 
 import chapter5.List;
-import chapter6.Option;
 import com.fpinjava.common.Function;
 
 public class ListMax {
