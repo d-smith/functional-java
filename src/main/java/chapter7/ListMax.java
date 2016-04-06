@@ -17,6 +17,8 @@ public class ListMax {
         Function<List<Integer>, Either<String,Integer>> max = ListMax.max();
         List<Integer> empty = List.list();
         System.out.println(String.format("List of empty max is %s",max.apply(empty)));
+        System.out.println(String.format("getOrElse on max of empty list with default 12 is %s",
+                max.apply(empty).getOrElse(() -> 12)));
         List<Integer> aList = List.list(1,2,3,4,5);
         System.out.println(String.format("List of aList max is %s",max.apply(aList)));
 

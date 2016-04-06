@@ -1,11 +1,18 @@
 package chapter7;
 
 import com.fpinjava.common.Function;
+import com.fpinjava.common.Supplier;
 
 public abstract class Either<E,A> {
 
     public abstract <B> Either<E, B> map(Function<A, B> f);
     public abstract <B> Either<E, B> flatMap(Function<A, Either<E,B>> f);
+
+    public abstract A getOrElse(Supplier<A> defaultValue);
+
+    public Either<E,A> orElse(Supplier<Either<E,A>> defaultValue) {
+        return map(x -> this).getOrElse(defaultValue);
+    }
 
 
     private static class Left<E,A> extends Either<E,A> {
@@ -28,6 +35,11 @@ public abstract class Either<E,A> {
         public <B> Either<E, B> flatMap(Function<A, Either<E, B>> f) {
             return new Left<>(value);
         }
+
+        @Override
+        public A getOrElse(Supplier<A> defaultValue) {
+            return defaultValue.get();
+        }
     }
 
     private static class Right<E,A> extends Either<E,A> {
@@ -49,6 +61,11 @@ public abstract class Either<E,A> {
         @Override
         public <B> Either<E, B> flatMap(Function<A, Either<E, B>> f) {
             return f.apply(value);
+        }
+
+        @Override
+        public A getOrElse(Supplier<A> defaultValue) {
+            return value;
         }
     }
 
