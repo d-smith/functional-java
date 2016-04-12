@@ -13,9 +13,40 @@ public abstract class Result<V> implements Serializable {
     public abstract <U> Result<U> flatMap(Function<V, Result<U>> f);
 
 
+    private static class Empty<V> extends Result<V> {
+        public Empty() {
+            super();
+        }
+
+        @Override
+        public V getOrElse(V defaultValue) {
+            return defaultValue;
+        }
+
+        @Override
+        public V getOrElse(Supplier<V> defaultValue) {
+            return defaultValue.get();
+        }
+
+        @Override
+        public <U> Result<U> map(Function<V, U> f) {
+            return empty();
+        }
+
+        @Override
+        public <U> Result<U> flatMap(Function<V, Result<U>> f) {
+            return empty();
+        }
+
+        @Override
+        public String toString() {
+            return "Empty()";
+        }
+    }
 
     private static class Failure<V> extends Result<V> {
         private RuntimeException exception;
+
 
         private Failure(String message) {
             super();
@@ -23,10 +54,12 @@ public abstract class Result<V> implements Serializable {
         }
 
         private Failure(RuntimeException exception) {
+            super();
             this.exception = exception;
         }
 
         private Failure(Exception e) {
+            super();
             this.exception = new IllegalStateException(e.getMessage(),e);
         }
 
@@ -89,6 +122,8 @@ public abstract class Result<V> implements Serializable {
             return f.apply(value);
         }
     }
+
+    public static <V> Result<V> empty() { return new Empty<>(); }
 
     public static <V> Result<V> failure(String message) {
         return new Failure<>(message);

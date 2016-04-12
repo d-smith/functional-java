@@ -1,6 +1,8 @@
 package chapter7;
 
 
+import java.io.IOException;
+
 public class ToonMail {
     public static void main(String[] args) {
         Map<String,Toon> toons = new Map<String,Toon>()
@@ -14,6 +16,8 @@ public class ToonMail {
     }
 
     public static Result<String> getName() {
-        return Result.success("Mickey");
+        //return Result.success("Mickey");
+        //return Result.failure(new IOException("error reading stuff"));
+        return Result.success("Minnie");
     }
 }

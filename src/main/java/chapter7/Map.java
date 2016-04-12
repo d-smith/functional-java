@@ -23,7 +23,7 @@ public class Map<T,U> {
     public Result<U> get(final T t) {
         return this.map.containsKey(t)
                 ? Result.success(this.map.get(t))
-                : Result.failure(String.format("Key %s not found in map",t));
+                : Result.empty();
 
     }
 }

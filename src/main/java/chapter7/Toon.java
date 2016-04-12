@@ -10,7 +10,7 @@ public class Toon {
     Toon(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = Result.failure(String.format("%s %s has no email", firstName, lastName));
+        this.email = Result.empty();
     }
 
     Toon(String firstName, String lastName, String email) {
