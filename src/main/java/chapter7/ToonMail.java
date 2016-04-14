@@ -13,11 +13,12 @@ public class ToonMail {
         Result<String> result =
                 getName().flatMap(toons::get).flatMap(Toon::getEmail);
         System.out.println(result);
+        System.out.println(result.filter(s -> s.equals("dolan@troll.org")));
     }
 
     public static Result<String> getName() {
         //return Result.success("Mickey");
         //return Result.failure(new IOException("error reading stuff"));
-        return Result.success("Minnie");
+        return Result.success("Dolan");
     }
 }

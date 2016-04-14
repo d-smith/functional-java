@@ -145,4 +145,18 @@ public abstract class Result<V> implements Serializable {
         return map(x -> this).getOrElse(defaultValue);
     }
 
+    public Result<V> filter(Function<V,Boolean> p) {
+        return flatMap(x -> p.apply(x)
+                ? this
+                : failure("Condition not matches"));
+    }
+
+    public Result<V> filter(Function<V,Boolean> p, String msg) {
+        return flatMap(x -> p.apply(x)
+                ? this
+                : failure(msg));
+    }
+
+
+
 }
