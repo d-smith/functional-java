@@ -157,6 +157,8 @@ public abstract class Result<V> implements Serializable {
                 : failure(msg));
     }
 
-
+    public boolean exists(Function<V,Boolean> p) {
+        return map(p).getOrElse(false);
+    }
 
 }
