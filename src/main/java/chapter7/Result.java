@@ -178,4 +178,10 @@ public abstract class Result<V> implements Serializable {
         return map(p).getOrElse(false);
     }
 
+
+    public static <V> Result<V> of(V value) {
+        return value != null
+                ? success(value)
+                : empty();
+    }
 }
