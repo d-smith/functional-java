@@ -11,6 +11,8 @@ public abstract class Result<V> implements Serializable {
     public abstract V getOrElse(final Supplier<V> defaultValue);
     public abstract <U> Result<U> map(Function<V, U> f);
     public abstract <U> Result<U> flatMap(Function<V, Result<U>> f);
+    public abstract Result<V> mapFailure(String s);
+
 
 
     private static class Empty<V> extends Result<V> {
@@ -41,6 +43,11 @@ public abstract class Result<V> implements Serializable {
         @Override
         public String toString() {
             return "Empty()";
+        }
+
+        @Override
+        public Result<V> mapFailure(String s) {
+            return this;
         }
     }
 
@@ -87,6 +94,11 @@ public abstract class Result<V> implements Serializable {
         public <U> Result<U> flatMap(Function<V, Result<U>> f) {
             return failure(exception);
         }
+
+        @Override
+        public Result<V> mapFailure(String s) {
+            return failure(new IllegalStateException(s, exception));
+        }
     }
 
     private static class Success<V> extends Result<V> {
@@ -120,6 +132,11 @@ public abstract class Result<V> implements Serializable {
         @Override
         public <U> Result<U> flatMap(Function<V, Result<U>> f) {
             return f.apply(value);
+        }
+
+        @Override
+        public Result<V> mapFailure(String s) {
+            return this;
         }
     }
 
