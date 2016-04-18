@@ -12,7 +12,7 @@ public abstract class Result<V> implements Serializable {
     public abstract <U> Result<U> map(Function<V, U> f);
     public abstract <U> Result<U> flatMap(Function<V, Result<U>> f);
     public abstract Result<V> mapFailure(String s);
-
+    public abstract void forEach(Effect<V> t);
 
 
     private static class Empty<V> extends Result<V> {
@@ -49,9 +49,15 @@ public abstract class Result<V> implements Serializable {
         public Result<V> mapFailure(String s) {
             return this;
         }
+
+
+        @Override
+        public void forEach(Effect<V> t) {
+            //Empty - nothing to do
+        }
     }
 
-    private static class Failure<V> extends Result<V> {
+    private static class Failure<V> extends Empty<V> {
         private RuntimeException exception;
 
 
@@ -138,6 +144,11 @@ public abstract class Result<V> implements Serializable {
         public Result<V> mapFailure(String s) {
             return this;
         }
+
+        @Override
+        public void forEach(Effect<V> t) {
+            t.apply(value);
+        }
     }
 
     public static <V> Result<V> empty() { return new Empty<>(); }
@@ -183,5 +194,11 @@ public abstract class Result<V> implements Serializable {
         return value != null
                 ? success(value)
                 : empty();
+    }
+
+    public static <V> Result<V> of(V value, String message) {
+        return value != null
+                ? success(value)
+                : failure(message);
     }
 }
