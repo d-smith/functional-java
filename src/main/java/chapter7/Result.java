@@ -13,6 +13,7 @@ public abstract class Result<V> implements Serializable {
     public abstract <U> Result<U> flatMap(Function<V, Result<U>> f);
     public abstract Result<V> mapFailure(String s);
     public abstract void forEach(Effect<V> t);
+    public abstract void forEachOrThrow(Effect<V> ef);
 
 
     private static class Empty<V> extends Result<V> {
@@ -54,6 +55,11 @@ public abstract class Result<V> implements Serializable {
         @Override
         public void forEach(Effect<V> t) {
             //Empty - nothing to do
+        }
+
+        @Override
+        public void forEachOrThrow(Effect<V> ef) {
+            //Do nothing
         }
     }
 
@@ -105,6 +111,9 @@ public abstract class Result<V> implements Serializable {
         public Result<V> mapFailure(String s) {
             return failure(new IllegalStateException(s, exception));
         }
+
+        @Override
+        public void forEachOrThrow(Effect<V> ef) { throw exception; }
     }
 
     private static class Success<V> extends Result<V> {
@@ -149,6 +158,9 @@ public abstract class Result<V> implements Serializable {
         public void forEach(Effect<V> t) {
             t.apply(value);
         }
+
+        @Override
+        public void forEachOrThrow(Effect<V> ef) { ef.apply(value); }
     }
 
     public static <V> Result<V> empty() { return new Empty<>(); }
