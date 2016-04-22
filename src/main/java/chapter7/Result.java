@@ -14,6 +14,7 @@ public abstract class Result<V> implements Serializable {
     public abstract Result<V> mapFailure(String s);
     public abstract void forEach(Effect<V> t);
     public abstract void forEachOrThrow(Effect<V> ef);
+    public abstract Result<RuntimeException> forEachOrException(Effect<V> ef);
 
 
     private static class Empty<V> extends Result<V> {
@@ -60,6 +61,11 @@ public abstract class Result<V> implements Serializable {
         @Override
         public void forEachOrThrow(Effect<V> ef) {
             //Do nothing
+        }
+
+        @Override
+        public Result<RuntimeException> forEachOrException(Effect<V> ef) {
+            return empty();
         }
     }
 
@@ -114,6 +120,11 @@ public abstract class Result<V> implements Serializable {
 
         @Override
         public void forEachOrThrow(Effect<V> ef) { throw exception; }
+
+        @Override
+        public Result<RuntimeException> forEachOrException(Effect<V> ef) {
+            return success(exception);
+        }
     }
 
     private static class Success<V> extends Result<V> {
@@ -161,6 +172,12 @@ public abstract class Result<V> implements Serializable {
 
         @Override
         public void forEachOrThrow(Effect<V> ef) { ef.apply(value); }
+
+        @Override
+        public Result<RuntimeException> forEachOrException(Effect<V> ef) {
+            ef.apply(value);
+            return empty();
+        }
     }
 
     public static <V> Result<V> empty() { return new Empty<>(); }
