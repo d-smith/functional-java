@@ -230,4 +230,14 @@ public abstract class Result<V> implements Serializable {
                 ? success(value)
                 : failure(message);
     }
+
+    public static <A,B> Function<Result<A>,Result<B>> lift(Function<A,B> f) {
+        return x -> {
+            try {
+                return x.map(f);
+            } catch (Exception e) {
+                return failure(e);
+            }
+        };
+    }
 }
