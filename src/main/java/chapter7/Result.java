@@ -240,4 +240,14 @@ public abstract class Result<V> implements Serializable {
             }
         };
     }
+
+    public static <A, B, C> Function<Result<A>, Function<Result<B>,Result<C>>> lift2(Function<A, Function<B, C>> f) {
+        return a -> b -> a.map(f).flatMap(b::map);
+    }
+
+    public static <A,B,C,D> Function<Result<A>, Function<Result<B>,Function<Result<C>, Result<D>>>> lift3(Function<A,Function<B,Function<C,D>>> f) {
+        return a -> b -> c -> a.map(f).flatMap(b::map).flatMap(c::map);
+    }
+
+
 }
