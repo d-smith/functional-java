@@ -249,5 +249,11 @@ public abstract class Result<V> implements Serializable {
         return a -> b -> c -> a.map(f).flatMap(b::map).flatMap(c::map);
     }
 
+    public static <A,B,C> Result<C> map2(Result<A> a, Result<B> b, Function<A,Function<B,C>> f) {
+        Function<Result<A>,Function<Result<B>,Result<C>>> f2 = lift2(f);
+        Function<Result<B>,Result<C>> f3 = f2.apply(a);
+        return f3.apply(b);
+    }
+
 
 }
