@@ -9,6 +9,8 @@ public class ListSample {
 
     public static void main(String... args) {
         List<Integer> ex1 = list();
+        System.out.println("headOption empty list " + ex1.headOption());
+
         List<Integer> ex2 = list(1);
         List<Integer> ex3 = list(1, 2);
 
@@ -36,6 +38,7 @@ public class ListSample {
         System.out.println(List.sum(list(1,2,3,4)));
         System.out.println(List.product(list(1.0,2.0,3.0,4.0)));
         System.out.println("length of big list: " + bl.length());
+        System.out.println("memoized length: " + bl.lengthMemoized());
 
         System.out.println(List.triple(bl));
 

@@ -2,6 +2,7 @@ package chapter8;
 
 
 import chapter4.TailCall;
+import chapter7.Result;
 import com.fpinjava.common.Function;
 
 import static chapter4.TailCall.ret;
@@ -24,6 +25,8 @@ public abstract class List<A> {
     public abstract List<A> filter(Function<A,Boolean> f);
     public abstract List<A> filterViaFlatmap(Function<A,Boolean> f);
     public abstract <B> List<B> flatMap(Function<A, List<B>>f);
+    public abstract int lengthMemoized();
+    public abstract Result<A> headOption();
 
 
     @SuppressWarnings("rawtypes")
@@ -89,15 +92,27 @@ public abstract class List<A> {
         public <B> List<B> flatMap(Function<A, List<B>> f) {
             return foldRight(list(),h -> t -> concat(f.apply(h),t));
         }
+
+        @Override
+        public int lengthMemoized() {
+            return 0;
+        }
+
+        @Override
+        public Result<A> headOption() {
+            return Result.empty();
+        }
     }
 
     private static class Cons<A> extends List<A> {
         private final A head;
         private final List<A> tail;
+        private int length;
 
         private Cons(A head, List<A> tail) {
             this.head = head;
             this.tail = tail;
+            this.length = 1 + tail.length();
         }
 
         public A head() {
@@ -203,6 +218,16 @@ public abstract class List<A> {
         @Override
         public <B> List<B> flatMap(Function<A, List<B>> f) {
             return foldRight(list(),h -> t -> concat(f.apply(h),t));
+        }
+
+        @Override
+        public int lengthMemoized() {
+            return length;
+        }
+
+        @Override
+        public Result<A> headOption() {
+            return Result.success(head);
         }
     }
 
