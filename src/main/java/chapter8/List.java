@@ -28,6 +28,9 @@ public abstract class List<A> {
     public abstract int lengthMemoized();
     public abstract Result<A> headOption();
 
+    public Result<A> lastOption() {
+        return foldLeft(Result.empty(), x -> y -> Result.success(y));
+    }
 
     @SuppressWarnings("rawtypes")
     public static final List NIL = new Nil();
@@ -284,5 +287,6 @@ public abstract class List<A> {
     public static List<String> doubleToString(List<Double> list) {
         return foldRight(list, list(), x -> y -> y.cons(x.toString()));
     }
+
 
 }

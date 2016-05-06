@@ -55,5 +55,7 @@ public class ListSample {
         System.out.println(list(1,2,3,4,5).reverse());
 
         System.out.println(List.flatten(list(list(1,2,3),list(4,5,6))));
+
+        System.out.println(bl.lastOption());
     }
 }
