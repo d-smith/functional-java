@@ -288,5 +288,8 @@ public abstract class List<A> {
         return foldRight(list, list(), x -> y -> y.cons(x.toString()));
     }
 
+    public static <A> List<A> flattenResult(List<Result<A>> list) {
+        return flatten(list.foldRight(list(), x -> y -> y.cons(x.map(List::list).getOrElse(list()))));
+    }
 
 }

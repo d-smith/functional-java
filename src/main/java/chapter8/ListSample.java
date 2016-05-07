@@ -1,8 +1,10 @@
 package chapter8;
 
 
+import chapter7.Result;
 import com.fpinjava.common.Function;
 
+import static chapter8.List.flattenResult;
 import static chapter8.List.list;
 
 public class ListSample {
@@ -57,5 +59,8 @@ public class ListSample {
         System.out.println(List.flatten(list(list(1,2,3),list(4,5,6))));
 
         System.out.println(bl.lastOption());
+
+        List<Result<Integer>> rl = list(Result.success(1), Result.failure("dang it"), Result.empty());
+        System.out.println(flattenResult(rl));
     }
 }
