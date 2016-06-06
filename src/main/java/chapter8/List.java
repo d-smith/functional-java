@@ -292,4 +292,17 @@ public abstract class List<A> {
         return flatten(list.foldRight(list(), x -> y -> y.cons(x.map(List::list).getOrElse(list()))));
     }
 
+    public static <A,B,C> List<C> zipWith(List<A> list1, List<B> list2, Function<A,Function<B,C>> f ) {
+        return zipWith_(list(), list1, list2,f).eval().reverse();
+    }
+
+    private static <A,B,C> TailCall<List<C>> zipWith_(List<C> acc, List<A> list1, List<B> list2,
+                                                      Function<A,Function<B,C>>f) {
+        return list1.isEmpty() || list2.isEmpty()
+                ? ret(acc)
+                : sus(()->zipWith_(
+                new Cons<>(f.apply(list1.head()).apply(list2.head()), acc),
+                list1.tail(), list2.tail(), f));
+    }
+
 }

@@ -62,5 +62,7 @@ public class ListSample {
 
         List<Result<Integer>> rl = list(Result.success(1), Result.failure("dang it"), Result.empty());
         System.out.println(flattenResult(rl));
+
+        System.out.println(List.zipWith(bl,bl, x -> y -> x + y));
     }
 }
