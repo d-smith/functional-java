@@ -64,5 +64,10 @@ public class ListSample {
         System.out.println(flattenResult(rl));
 
         System.out.println(List.zipWith(bl,bl, x -> y -> x + y));
+
+        List<String> sl1 = list("a","b","c");
+        List<String> sl2 = list("d","e","f");
+
+        System.out.println(List.product(sl1, sl2, x -> y -> x + y));
     }
 }

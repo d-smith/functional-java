@@ -305,4 +305,7 @@ public abstract class List<A> {
                 list1.tail(), list2.tail(), f));
     }
 
+    public static <A,B, C> List<C> product(List<A> list1, List<B> list2, Function<A,Function<B,C>> f) {
+        return list1.flatMap(a -> list2.map(b -> f.apply(a).apply(b)));
+    }
 }
