@@ -4,6 +4,7 @@ package chapter8;
 import chapter4.TailCall;
 import chapter7.Result;
 import com.fpinjava.common.Function;
+import com.fpinjava.common.Tuple;
 
 import static chapter4.TailCall.ret;
 import static chapter4.TailCall.sus;
@@ -308,4 +309,9 @@ public abstract class List<A> {
     public static <A,B, C> List<C> product(List<A> list1, List<B> list2, Function<A,Function<B,C>> f) {
         return list1.flatMap(a -> list2.map(b -> f.apply(a).apply(b)));
     }
+
+    //public static <A,B> Tuple<List<A>,List<B>> unzip(List<Tuple<A,B>> list) {
+    //    return list.foldRight(new Tuple(list(),list()),
+    //            t -> tl -> new Tuple<>(tl._1.cons(t._1),tl._2.cons(t._2)));
+    //}
 }
